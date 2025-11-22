@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLock | Turn Screen Time into Growth Time</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00BBF9;
+            --secondary: #00F5A0;
+            --dark: #0f172a;
+            --light: #ffffff;
+            --gray: #64748b;
+            --bg-soft: #f8fafc;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --radius-lg: 24px;
+            --radius-md: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Utilities */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--dark);
+            color: white;
+            border: 1px solid var(--dark);
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-accent {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: #0f172a;
+            border: none;
+            box-shadow: 0 4px 20px rgba(0, 187, 249, 0.3);
+        }
+
+        .btn-accent:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 187, 249, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #e2e8f0;
+            color: var(--dark);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--dark);
+        }
+
+        /* Navigation */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 16px 0;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: -0.03em;
+            color: var(--dark);
+        }
+        
+        .logo span { color: var(--primary); }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--gray);
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: var(--dark); }
+
+        /* Hero */
+        .hero {
+            padding: 100px 0 80px;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            color: var(--dark);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--gray);
+            margin-bottom: 40px;
+            max-width: 540px;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 16px;
+        }
+
+        /* Phone Mockup (CSS Only) */
+        .phone-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .phone-frame {
+            width: 300px;
+            height: 600px;
+            background: var(--dark);
+            border-radius: 48px;
+            border: 8px solid #1e293b;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transform: rotate(-2deg);
+            transition: transform 0.3s ease;
+        }
+
+        .phone-frame:hover {
+            transform: rotate(0deg) translateY(-10px);
+        }
+
+        .screen-content {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Abstract UI Elements */
+        .ui-header { display: flex; justify-content: space-between; margin-bottom: 30px; margin-top: 20px;}
+        .ui-circle { width: 32px; height: 32px; background: #e2e8f0; border-radius: 50%; }
+        .ui-card { 
+            background: white; 
+            border-radius: 16px; 
+            padding: 16px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 16px;
+            border: 1px solid #f1f5f9;
+        }
+        .ui-bar { height: 8px; border-radius: 4px; background: #f1f5f9; width: 100%; margin-top: 8px; }
+        .ui-bar-fill { height: 100%; width: 60%; background: var(--primary); border-radius: 4px; }
+        .ui-stat-big { font-size: 2rem; font-weight: 800; color: var(--dark); text-align: center; margin: 20px 0; }
+        .ui-lock-btn {
+            margin-top: auto;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        /* Social Proof */
+        .social-proof {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .social-proof p {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--gray);
+            margin-bottom: 24px;
+            font-weight: 600;
+        }
+
+        .logos {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            opacity: 0.5;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #94a3b8;
+        }
+
+        /* Sections */
+        section { padding: 100px 0; }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 80px;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .section-header p { color: var(--gray); font-size: 1.1rem; }
+
+        /* Problem Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .card {
+            padding: 32px;
+            border-radius: var(--radius-lg);
+            background: white;
+            border: 1px solid #f1f5f9;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
+        .card-icon { font-size: 2rem; margin-bottom: 20px; display: block; }
+        .card h3 { margin-bottom: 12px; font-size: 1.25rem; }
+        .card p { color: var(--gray); font-size: 0.95rem; }
+
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 20px;
+            padding: 24px;
+            border-radius: var(--radius-md);
+            background: var(--bg-soft);
+        }
+
+        .feature-icon-box {
+            min-width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* AI Section */
+        .ai-section {
+            background: #0f172a;
+            color: white;
+            border-radius: 40px;
+            padding: 80px 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .ai-badge {
+            background: rgba(255,255,255,0.1);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 20px;
+            display: inline-block;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .ai-insight-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 24px;
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+
+        /* Pricing */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .price-card {
+            padding: 48px;
+            border-radius: 32px;
+            border: 1px solid #e2e8f0;
+            background: white;
+        }
+
+        .price-card.pro {
+            border-color: var(--primary);
+            background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 100%);
+            position: relative;
+        }
+
+        .price-tag {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 20px 0;
+            display: block;
+        }
+
+        .price-tag span { font-size: 1rem; font-weight: 400; color: var(--gray); }
+
+        .price-features { list-style: none; margin-bottom: 32px; }
+        .price-features li { margin-bottom: 12px; color: var(--gray); display: flex; align-items: center; gap: 10px; }
+        .check { color: var(--secondary); font-weight: bold; }
+
+        /* Footer */
+        footer {
+            background: var(--bg-soft);
+            padding: 80px 0 40px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-links h4 { margin-bottom: 20px; font-size: 0.9rem; color: var(--dark); }
+        .footer-links a { display: block; margin-bottom: 12px; color: var(--gray); text-decoration: none; font-size: 0.9rem; }
+        .footer-links a:hover { color: var(--primary); }
+
+        /* Animation Utility */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .navbar .nav-links { display: none; }
+            .hero { grid-template-columns: 1fr; text-align: center; padding-top: 60px; }
+            .cta-group { justify-content: center; }
+            .hero h1 { font-size: 2.8rem; }
+            .cards-grid, .feature-grid, .pricing-grid, .ai-content, .footer-grid { grid-template-columns: 1fr; }
+            .phone-frame { margin: 40px auto 0; }
+            .ai-section { padding: 40px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-content">
+            <div class="logo">SLock<span>.</span></div>
+            <div class="nav-links">
+                <a href="#how-it-works">How it Works</a>
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#faq">FAQ</a>
+                <a href="#" class="btn btn-primary">Join Waitlist</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero" style="padding: 0;">
+                <div class="fade-up">
+                    <h1>Stop doomscrolling.<br><span class="gradient-text">Start living.</span></h1>
+                    <p>SLock uses AI + gamified focus to help you cut phone addiction, stay accountable with friends, and build better habits—without feeling forced.</p>
+                    <div class="cta-group">
+                        <a href="#" class="btn btn-accent">Join the Waitlist</a>
+                        <a href="#features" class="btn btn-outline">See How It Works</a>
+                    </div>
+                    <div style="margin-top: 30px; display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--gray);">
+                        <span style="color: var(--secondary);">●</span> Early access filling up fast
+                    </div>
+                </div>
+                
+                <div class="phone-container fade-up">
+                    <div class="phone-frame">
+                        <div class="screen-content">
+                            <div class="ui-header">
+                                <div style="font-weight: 700;">Dashboard</div>
+                                <div class="ui-circle"></div>
+                            </div>
+                            
+                            <div class="ui-stat-big">
+                                2h 14m
+                                <div style="font-size: 0.9rem; color: var(--gray); font-weight: 400; margin-top: 5px;">Focus Time Today</div>
+                            </div>
+
+                            <div class="ui-card">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                    <strong>Guardian Level</strong>
+                                    <span style="color: var(--primary);">Lv. 12 🌿</span>
+                                </div>
+                                <div class="ui-bar"><div class="ui-bar-fill"></div></div>
+                            </div>
+
+                            <div class="ui-card" style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+                                <div style="font-size: 2rem; margin-bottom: 10px;">🔥</div>
+                                <strong>12 Day Streak</strong>
+                                <p style="font-size: 0.8rem; color: var(--gray);">You beat 80% of friends</p>
+                            </div>
+
+                            <div class="ui-lock-btn">START FOCUS SESSION</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="social-proof">
+        <div class="container">
+            <p>Built by students at UCI & backed by behavioral science</p>
+            <div class="logos">
+                <span>UCI</span>
+                <span>Y Combinator</span>
+                <span>Product Hunt</span>
+                <span>TechCrunch</span>
+            </div>
+        </div>
+    </div>
+
+    <section>
+        <div class="container">
+            <div class="section-header fade-up">
+                <h2>Reclaim your time</h2>
+                <p>The average student loses 4 hours a day to screens. We fixed the feedback loop.</p>
+            </div>
+            <div class="cards-grid">
+                <div class="card fade-up">
+                    <span class="card-icon">🛑</span>
+                    <h3>The Problem</h3>
+                    <p>Willpower isn't enough against billion-dollar algorithms designed to keep you scrolling.</p>
+                </div>
+                <div class="card fade-up">
+                    <span class="card-icon">🧠</span>
+                    <h3>The Insight</h3>
+                    <p>Blocking apps feels restrictive. But competing with friends and growing a character feels rewarding.</p>
+                </div>
+                <div class="card fade-up">
+                    <span class="card-icon">✨</span>
+                    <h3>The Promise</h3>
+                    <p>SLock makes putting your phone down the most dopamine-rich part of your day.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" style="background-color: #f8fafc;">
+        <div class="container">
+            <div class="section-header fade-up">
+                <h2>Engineered for Focus</h2>
+                <p>A complete toolkit to hack your habits.</p>
+            </div>
+            
+            <div class="feature-grid">
+                <div class="feature-item fade-up">
+                    <div class="feature-icon-box">🤖</div>
+                    <div>
+                        <h3>AI Focus Coach</h3>
+                        <p style="color: var(--gray); font-size: 0.9rem;">Predicts risky scroll windows and nudges you before you slip into a doomscroll.</p>
+                    </div>
+                </div>
+                <div class="feature-item fade-up">
+                    <div class="feature-icon-box">🌱</div>
+                    <div>
+                        <h3>Gamified Growth</h3>
+                        <p style="color: var(--gray); font-size: 0.9rem;">Your virtual guardian evolves when you focus. Neglect it, and it withers.</p>
+                    </div>
+                </div>
+                <div class="feature-item fade-up">
+                    <div class="feature-icon-box">👥</div>
+                    <div>
+                        <h3>Social Lock-In</h3>
+                        <p style="color: var(--gray); font-size: 0.9rem;">See live leaderboards. If you break a lock, your squad knows.</p>
+                    </div>
+                </div>
+                <div class="feature-item fade-up">
+                    <div class="feature-icon-box">⚡</div>
+                    <div>
+                        <h3>Quick Interventions</h3>
+                        <p style="color: var(--gray); font-size: 0.9rem;">Tempted? Activate a 60-second "Reset Mode" to break the trance.</p>
+                    </div>
+                </div>
+                <div class="feature-item fade-up">
+                    <div class="feature-icon-box">📊</div>
+                    <div>
+                        <h3>Progress Insights</h3>
+                        <p style="color: var(--gray); font-size: 0.9rem;">Weekly "You vs. You" reports focused on improvement, not guilt.</p>
+                    </div>
+                </div>
+                <div class="feature-item fade-up">
+                    <div class="feature-icon-box">🔒</div>
+                    <div>
+                        <h3>Smart Limits</h3>
+                        <p style="color: var(--gray); font-size: 0.9rem;">Adaptive restrictions that get stricter when you need them most.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="ai-section fade-up">
+            <div class="ai-content">
+                <div>
+                    <span class="ai-badge">✨ Powered by SLock Intelligence</span>
+                    <h2 style="margin-bottom: 20px;">AI that learns your habits.</h2>
+                    <p style="color: #94a3b8; margin-bottom: 30px;">SLock doesn't just block apps. It learns when you are most vulnerable to distraction and intervenes with personalized nudges.</p>
+                    <ul style="list-style: none; color: #cbd5e1;">
+                        <li style="margin-bottom: 10px;">✓ Pattern detection</li>
+                        <li style="margin-bottom: 10px;">✓ Adaptive difficulty</li>
+                        <li>✓ Privacy-first learning</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="ai-insight-card">
+                        <div style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Insight Alert</div>
+                        <p style="font-size: 1.1rem; margin-bottom: 10px;">"You tend to doomscroll Instagram between <strong>10:40pm and 12:10am</strong>."</p>
+                        <hr style="border-color: rgba(255,255,255,0.1); margin: 15px 0;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 0.9rem;">Recommendation:</span>
+                            <button style="background: white; color: black; border: none; padding: 8px 16px; border-radius: 20px; font-weight: 600; font-size: 0.8rem; cursor: pointer;">Enable Wind-down Lock</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" style="background: #f8fafc;">
+        <div class="container">
+            <div class="section-header fade-up">
+                <h2>Simple to start</h2>
+            </div>
+            <div class="cards-grid" style="text-align: center;">
+                <div class="fade-up">
+                    <div style="font-size: 3rem; margin-bottom: 20px; opacity: 0.2; font-weight: 800;">01</div>
+                    <h3>Track Habits</h3>
+                    <p>Install SLock and let it quietly map your usage patterns.</p>
+                </div>
+                <div class="fade-up">
+                    <div style="font-size: 3rem; margin-bottom: 20px; opacity: 0.2; font-weight: 800;">02</div>
+                    <h3>Set Goals</h3>
+                    <p>Choose a difficulty level and invite friends to your squad.</p>
+                </div>
+                <div class="fade-up">
+                    <div style="font-size: 3rem; margin-bottom: 20px; opacity: 0.2; font-weight: 800;">03</div>
+                    <h3>Grow & Win</h3>
+                    <p>Lock apps, maintain streaks, and evolve your guardian.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing">
+        <div class="container">
+            <div class="section-header fade-up">
+                <h2>Invest in your focus</h2>
+                <p>Cheaper than a coffee. More valuable than a degree.</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="price-card fade-up">
+                    <h3>Free</h3>
+                    <div class="price-tag">$0 <span>/ forever</span></div>
+                    <ul class="price-features">
+                        <li><span class="check">✓</span> Basic Usage Tracking</li>
+                        <li><span class="check">✓</span> Standard Focus Modes</li>
+                        <li><span class="check">✓</span> 1 Guardian Character</li>
+                        <li><span class="check">✓</span> Up to 3 Friends</li>
+                    </ul>
+                    <a href="#" class="btn btn-outline" style="width: 100%;">Download Now</a>
+                </div>
+                <div class="price-card pro fade-up">
+                    <div style="position: absolute; top: 20px; right: 20px; background: var(--primary); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;">MOST POPULAR</div>
+                    <h3>Pro</h3>
+                    <div class="price-tag">$4.99 <span>/ month</span></div>
+                    <ul class="price-features">
+                        <li><span class="check">✓</span> Everything in Free</li>
+                        <li><span class="check">✓</span> <strong>AI Focus Coach</strong></li>
+                        <li><span class="check">✓</span> Unlimited Squads</li>
+                        <li><span class="check">✓</span> Deep Analytics & Insights</li>
+                        <li><span class="check">✓</span> Exclusive Skins</li>
+                    </ul>
+                    <a href="#" class="btn btn-accent" style="width: 100%;">Start Free Trial</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" style="background: #f8fafc;">
+        <div class="container" style="max-width: 800px;">
+            <div class="section-header fade-up">
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            
+            <details style="margin-bottom: 16px; background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; cursor: pointer;">
+                <summary style="font-weight: 600; list-style: none; display: flex; justify-content: space-between;">How is this different from Screen Time?</summary>
+                <p style="margin-top: 12px; color: var(--gray);">Screen Time is passive. SLock is active, social, and gamified. We use behavioral psychology to make stopping fun, rather than just setting a limit you can easily ignore.</p>
+            </details>
+
+            <details style="margin-bottom: 16px; background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; cursor: pointer;">
+                <summary style="font-weight: 600; list-style: none; display: flex; justify-content: space-between;">Is my data private?</summary>
+                <p style="margin-top: 12px; color: var(--gray);">100%. We use industry-standard encryption. Your usage data is analyzed locally or securely on our servers solely to provide insights. We do not sell your data.</p>
+            </details>
+
+            <details style="margin-bottom: 16px; background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; cursor: pointer;">
+                <summary style="font-weight: 600; list-style: none; display: flex; justify-content: space-between;">Can I use it on Android?</summary>
+                <p style="margin-top: 12px; color: var(--gray);">Currently, we are launching on iOS first. An Android version is in development and will be released in Q4.</p>
+            </details>
+        </div>
+    </section>
+
+    <section style="text-align: center; padding: 100px 0;">
+        <div class="container fade-up">
+            <h2 style="font-size: 3rem; margin-bottom: 24px;">Ready to take your time back?</h2>
+            <p style="margin-bottom: 40px; font-size: 1.2rem; color: var(--gray);">Join 5,000+ students on the waitlist.</p>
+            <form style="max-width: 400px; margin: 0 auto; display: flex; gap: 10px;">
+                <input type="email" placeholder="Enter your email" style="flex: 1; padding: 16px; border-radius: 50px; border: 1px solid #cbd5e1; outline: none;">
+                <button class="btn btn-primary" style="padding: 16px 32px;">Join</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="logo" style="margin-bottom: 20px;">SLock<span>.</span></div>
+                    <p style="color: var(--gray); font-size: 0.9rem;">The social, gamified screen time manager.<br>Built for the next generation of builders.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Product</h4>
+                    <a href="#">Features</a>
+                    <a href="#">Pricing</a>
+                    <a href="#">Download</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <a href="#">About</a>
+                    <a href="#">Blog</a>
+                    <a href="#">Careers</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                    <a href="#">Contact</a>
+                </div>
+            </div>
+            <div style="text-align: center; color: var(--gray); font-size: 0.8rem;">
+                &copy; 2025 SLock Inc. All rights reserved. <span style="margin-left: 10px; opacity: 0.5;">Private Beta.</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple Scroll Animation Observer
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
